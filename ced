@@ -1,0 +1,133 @@
+#! /usr/bin/env python3
+
+import os
+import sys
+
+filepath = ""
+content = []
+paste_buffer = []
+
+def append_mode():
+    while(True):
+        ln = input()
+        if (ln == "."):
+            break
+        else:
+            content.append(ln)
+
+def copy_mode():
+    global content
+    global paste_buffer
+
+    while(True):
+        ln = input("copy > ")
+        if (ln == "n"):
+            show_file()
+        elif (not ln.isnumeric()):
+            print("?")
+        else:
+            paste_buffer = content[int(ln)]
+            break
+
+def cut_mode():
+    global content
+    global paste_buffer
+
+    while(True):
+        ln = input("cut > ")
+        if (ln == "n"):
+            show_file()
+        elif (not ln.isnumeric()):
+            print("?")
+        else:
+            paste_buffer = content.pop(int(ln))
+            break
+
+def delete_mode():
+    global content
+
+    while(True):
+        ln = input("delete > ")
+        if (ln == "n"):
+            show_file()
+        elif (not ln.isnumeric()):
+            print("?")
+        else:
+            content.pop(int(ln))
+            break
+
+def paste_mode():
+    global content
+    global paste_buffer
+
+    while(True):
+        ln = input("paste > ")
+        if (ln == "n"):
+            show_file()
+        elif (not ln.isnumeric()):
+            print("?")
+        else:
+            content.insert(int(ln), paste_buffer)
+            break
+
+def get_file_content(path):
+    global content
+
+    with open(path, "r") as file:
+        content = file.read().split("\n")
+        if (content[-1] == ''):
+            content.pop()
+
+def show_file():
+    global content
+
+    for x,i in enumerate(content):
+        print("{} {}".format(x, i))
+
+
+def write_file():
+    global filepath
+
+    if (not filepath):
+        filepath = input("filename > ")
+
+    with open(filepath, "w") as file:
+        text = "\n".join(content) + "\n"
+        file.write(text)
+
+def ced():
+    while(True):
+        prompt = input("> ").strip()
+        if (prompt == "q"):
+            sys.exit()
+        elif (prompt == "n"):
+            show_file()
+        elif (prompt == "w"):
+            write_file()
+        # Modes
+        elif (prompt == "a"):
+            append_mode()
+        elif (prompt == "c"):
+            copy_mode()
+        elif (prompt == "d"):
+            delete_mode()
+        elif (prompt == "p"):
+            paste_mode()
+        elif (prompt == "x"):
+            cut_mode()
+        else:
+            print("?")
+
+def main():
+    global filepath
+
+    args = sys.argv
+
+    if (len(args) == 2):
+        get_file_content(args[1])
+        filepath = args[1]
+        
+    ced()
+
+if (__name__ == "__main__"):
+    main()
