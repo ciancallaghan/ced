@@ -56,6 +56,26 @@ def delete_mode():
             content.pop(int(ln))
             break
 
+def insert_mode():
+    global content
+
+    while(True):
+        ln = input("insert > ")
+        if (ln == "n"):
+            show_file()
+        elif (not ln.isnumeric()):
+            print("?")
+        else:
+            insert_point = int(ln)
+            break
+    while(True):
+        ln = input()
+        if (ln == "."):
+            break
+        else:
+            content.insert(insert_point, ln)
+            insert_point = insert_point + 1
+
 def paste_mode():
     global content
     global paste_buffer
@@ -111,6 +131,8 @@ def ced():
             copy_mode()
         elif (prompt == "d"):
             delete_mode()
+        elif (prompt == "i"):
+            insert_mode()
         elif (prompt == "p"):
             paste_mode()
         elif (prompt == "x"):
