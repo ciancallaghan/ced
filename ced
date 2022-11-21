@@ -98,12 +98,19 @@ def get_file_content(path):
         if (content[-1] == ''):
             content.pop()
 
+def new_file():
+    global content
+
+    ln = input("open > ")
+    get_file_content(ln)
+    filepath = ln
+
 def show_file():
     global content
 
     for x,i in enumerate(content):
-        print("{} {}".format(x, i))
-
+        sidebar = str(x).rjust(len(str(len(content))), "0")
+        print("{} {}".format(sidebar, i))
 
 def write_file():
     global filepath
@@ -120,6 +127,8 @@ def ced():
         prompt = input("> ").strip()
         if (prompt == "q"):
             sys.exit()
+        elif (prompt == "e"):
+            new_file()
         elif (prompt == "n"):
             show_file()
         elif (prompt == "w"):

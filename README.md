@@ -6,6 +6,7 @@ Inspired by [chalk](https://tildegit.org/sloum/chalk)
 
 ## TODO
 
+* edit a line
 * add all modes to one function
-* Open new file from `argv`
+* open new file from `argv`
 * let modes work on multiple files
